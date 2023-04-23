@@ -1,5 +1,5 @@
 //axios import buraya gelecek
-
+import axios from "axios";
 var benimIP;
 
 
@@ -70,3 +70,49 @@ async function ipAdresimiAl(){
 
 
 //kodlar buraya gelecek
+
+function cardCreate(bilgi){
+    const allCard=document.createElement("div");
+    allCard.setAttribute("class","card")
+
+    let image=document.createElement("img");
+    image.setAttribute( "src", bilgi.ülkebayrağı)
+
+    const cardinfo=document.createElement("div");
+    cardinfo.setAttribute("class","card-info")
+
+    const ipadres=document.createElement("h3");
+    ipadres.setAttribute("class","ip")
+    ipadres.textContent=bilgi.sorgu
+
+    const country=document.createElement("p");
+    country.setAttribute("class","ulke")
+    country.textContent=`${bilgi.ülke} (${bilgi.ülkeKodu})`
+
+    const koordinat=document.createElement("p");
+    koordinat.textContent=`Enlem:${bilgi.enlem} Boylam:${bilgi.boylam}`
+
+    const city=document.createElement("p");
+    city.textContent=`Şehir:${bilgi.şehir}`
+
+    const saat=document.createElement("p");
+    saat.textContent=`Saat dilimi:${bilgi.saatdilimi}`
+
+    const para=document.createElement("p");
+    para.textContent=`Para birimi:${bilgi.parabirimi}`
+
+    const company=document.createElement("p");
+    company.textContent=`ISP:${bilgi.isp}`
+
+    allCard.append(image,cardinfo);
+    cardinfo.append(ipadres,country,koordinat,city,saat,para,company);
+    return allCard;
+
+}
+const cards=document.querySelector(".cards")
+
+ipAdresimiAl().then(()=>{
+     axios
+     .get("https://apis.ergineer.com/ipgeoapi/" + benimIP)
+     .then ((response)=>{cards.append(cardCreate(response.data))}) 
+})
